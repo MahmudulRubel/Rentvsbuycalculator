@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent vs Buy Calculator — Is It Cheaper to Rent or Buy a Home?</title>
+    <meta name="description" content="Calculate if buying or renting a home is better for your finances. Compare monthly payments, cumulative costs, equity growth, and find your breakeven year.">
+    <link rel="canonical" href="https://yourdomain.com/rent-vs-buy-calculator">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Rent vs Buy Calculator — Is It Cheaper to Rent or Buy a Home?">
+    <meta property="og:description" content="Use our advanced calculator to compare the long-term financial impact of buying vs renting.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com/rent-vs-buy-calculator">
+    <meta property="og:image" content="https://yourdomain.com/og-image.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a rent vs buy calculator?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A rent vs buy calculator is a tool that compares the total costs of renting a property versus buying one over a specific time horizon, considering factors like mortgage interest, property taxes, appreciation, and investment returns."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the breakeven year in real estate?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The breakeven year is the point in time where the cumulative cost of buying a home becomes lower than the cumulative cost of renting a similar property."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does home appreciation affect the decision?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Higher home appreciation makes buying more attractive because it increases your equity and net worth over time, potentially shortening the breakeven period."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the hidden costs of buying a home?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Hidden costs include property taxes, homeowners insurance, HOA fees, maintenance (typically 1% of home value annually), and closing costs during purchase and sale."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is renting ever better than buying?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, renting can be better if you plan to stay for a short period, if home prices are extremely high relative to rents, or if you can achieve higher returns by investing your down payment elsewhere."
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Rent vs Buy Calculator</h1>
+            <p>Make an informed decision about your future home.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="calculator-card">
+            <div class="calculator-grid">
+                <!-- Inputs Section -->
+                <div class="inputs-section">
+                    <div class="input-group-header">
+                        <h3>Buying Details</h3>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-field">
+                            <label for="homePrice">Home Price ($)</label>
+                            <input type="number" id="homePrice" value="400000" step="1000">
+                        </div>
+                        <div class="input-field">
+                            <label for="downPayment">Down Payment ($)</label>
+                            <input type="number" id="downPayment" value="80000" step="1000">
+                        </div>
+                        <div class="input-field">
+                            <label for="mortgageRate">Mortgage Rate (%)</label>
+                            <input type="number" id="mortgageRate" value="6.5" step="0.1">
+                        </div>
+                        <div class="input-field">
+                            <label for="loanTerm">Loan Term (Years)</label>
+                            <input type="number" id="loanTerm" value="30">
+                        </div>
+                        <div class="input-field">
+                            <label for="propertyTax">Property Tax (%/yr)</label>
+                            <input type="number" id="propertyTax" value="1.2" step="0.1">
+                        </div>
+                        <div class="input-field">
+                            <label for="hoaFees">HOA Fees ($/mo)</label>
+                            <input type="number" id="hoaFees" value="200" step="10">
+                        </div>
+                        <div class="input-field">
+                            <label for="homeInsurance">Home Insurance ($/mo)</label>
+                            <input type="number" id="homeInsurance" value="150" step="10">
+                        </div>
+                    </div>
+
+                    <div class="input-group-header">
+                        <h3>Renting Details</h3>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-field">
+                            <label for="monthlyRent">Monthly Rent ($)</label>
+                            <input type="number" id="monthlyRent" value="2500" step="50">
+                        </div>
+                        <div class="input-field">
+                            <label for="renterInsurance">Renter's Insurance ($/mo)</label>
+                            <input type="number" id="renterInsurance" value="20" step="5">
+                        </div>
+                    </div>
+
+                    <div class="input-group-header">
+                        <h3>Future Assumptions</h3>
+                    </div>
+                    <div class="slider-grid">
+                        <div class="slider-field">
+                            <div class="slider-label">
+                                <label for="homeAppreciation">Home Appreciation: <span id="homeAppreciationVal">3</span>%</label>
+                            </div>
+                            <input type="range" id="homeAppreciation" min="0" max="10" step="0.1" value="3">
+                        </div>
+                        <div class="slider-field">
+                            <div class="slider-label">
+                                <label for="rentIncrease">Rent Increase: <span id="rentIncreaseVal">3</span>%</label>
+                            </div>
+                            <input type="range" id="rentIncrease" min="0" max="10" step="0.1" value="3">
+                        </div>
+                        <div class="slider-field">
+                            <div class="slider-label">
+                                <label for="investmentReturn">Investment Return: <span id="investmentReturnVal">7</span>%</label>
+                            </div>
+                            <input type="range" id="investmentReturn" min="0" max="15" step="0.1" value="7">
+                        </div>
+                        <div class="slider-field">
+                            <div class="slider-label">
+                                <label for="timeHorizon">Time Horizon: <span id="timeHorizonVal">10</span> Years</label>
+                            </div>
+                            <input type="range" id="timeHorizon" min="1" max="30" step="1" value="10">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-section">
+                    <div class="metrics-grid">
+                        <div class="metric-card buying">
+                            <span class="metric-label">Monthly Buying Cost</span>
+                            <span class="metric-value" id="monthlyMortgageResult">$0</span>
+                        </div>
+                        <div class="metric-card renting">
+                            <span class="metric-label">Monthly Renting Cost</span>
+                            <span class="metric-value" id="monthlyRentResult">$0</span>
+                        </div>
+                        <div class="metric-card highlight">
+                            <span class="metric-label">Breakeven Year</span>
+                            <span class="metric-value" id="breakevenResult">-</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label" id="savingsLabel">10-Year Difference</span>
+                            <span class="metric-value" id="savingsResult">$0</span>
+                        </div>
+                    </div>
+
+                    <div id="verdictBanner" class="verdict-banner">
+                        <p id="verdictText">Calculating...</p>
+                        <a href="#" class="cta-button">Compare Mortgage Rates &rarr;</a>
+                    </div>
+
+                    <!-- AD SLOT -->
+                    <div class="ad-slot ad-center">
+                        <span class="ad-label">Advertisement</span>
+                        <!-- Ad Content Placeholder -->
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="costChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AD SLOT -->
+        <div class="ad-slot ad-wide">
+            <span class="ad-label">Advertisement</span>
+            <!-- Ad Content Placeholder -->
+        </div>
+
+        <section class="details-section">
+            <div class="section-header">
+                <h2>Financial Breakdown</h2>
+            </div>
+            <div class="table-responsive">
+                <table id="breakdownTable">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>Home Value</th>
+                            <th>Remaining Loan</th>
+                            <th>Equity</th>
+                            <th>Cumulative Buy Cost</th>
+                            <th>Cumulative Rent Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <article class="content-section">
+            <section>
+                <h2>How this rent vs buy calculator works</h2>
+                <p>Our calculator performs a comprehensive year-by-year analysis comparing the total cost of ownership against the cost of renting a similar property. For buying, we include the mortgage principal and interest, property taxes, home insurance, HOA fees, and an estimated 1% annual maintenance cost. We also factor in the initial closing costs (3%) and the potential appreciation of the home's value. For renting, we calculate the cumulative rent and renter's insurance, factoring in annual rent increases. Crucially, we model the opportunity cost by assuming the down payment is instead invested at your specified return rate.</p>
+            </section>
+
+            <section>
+                <h2>What is the breakeven point?</h2>
+                <p>The breakeven point is the specific year when the total cost of buying a home (including all expenses minus the equity gained) becomes lower than the total cost of renting over that same period. In the early years of homeownership, high closing costs and interest payments often make buying more expensive. However, as the mortgage principal is paid down and the property appreciates, buying typically becomes the more financially sound choice. Our calculator identifies this "crossover" point to help you determine how long you need to stay in a home to justify the purchase.</p>
+            </section>
+
+            <section>
+                <h2>Hidden costs of buying a home</h2>
+                <p>While most people focus on the monthly mortgage payment, homeownership involves several recurring and one-time expenses. Property taxes and homeowners insurance can add hundreds to your monthly budget and typically increase over time. HOA fees are common in many developments and cover shared amenities but are subject to hikes. Maintenance is a significant hidden cost; experts recommend budgeting at least 1% of the home's value annually for repairs. Finally, don't forget closing costs, which usually range from 2% to 5% of the purchase price and are paid upfront.</p>
+            </section>
+
+            <section>
+                <h2>Hidden costs of renting</h2>
+                <p>Renting is often seen as a simpler financial commitment, but it also has hidden financial implications. The most significant "cost" is the lack of equity building—every dollar spent on rent is gone forever. Additionally, rent is not fixed; annual increases can significantly impact your long-term budget. Renter's insurance, while affordable, is a necessary expense to protect your belongings. Furthermore, renters face the lack of control over their living space and the potential for being forced to move if the landlord decides to sell or not renew the lease, which incurs moving costs and stress.</p>
+            </section>
+
+            <section>
+                <h2>When does buying make financial sense?</h2>
+                <p>Buying usually makes financial sense if you plan to stay in the home for at least five to seven years. This allows enough time for the home's appreciation to offset the initial closing costs and the high interest-to-principal ratio of early mortgage payments. It is also a strong choice in markets where rent prices are high relative to home values. Beyond the math, buying offers the stability of a fixed monthly payment (with a fixed-rate mortgage) and the freedom to customize your property, which provides emotional and lifestyle value that rent vs buy calculators can't fully capture.</p>
+            </section>
+
+            <section>
+                <h2>When is renting the smarter choice?</h2>
+                <p>Renting is often the smarter choice if your life is in transition or if you value flexibility. If you expect to move within three years, the high transaction costs of buying (closing costs on both the purchase and eventual sale) will likely outweigh any equity gains. Renting is also advantageous when home prices are at a historical peak or when mortgage rates are exceptionally high. Furthermore, if you can achieve significantly higher returns by investing your down payment in the stock market or a business than you would through home appreciation, renting could leave you with a higher net worth.</p>
+            </section>
+
+            <section>
+                <h2>How home appreciation affects the decision</h2>
+                <p>Home appreciation is one of the most powerful drivers of the "buy" side of the equation. Even a modest 3% annual appreciation can add tens of thousands of dollars to your net worth over a decade on a $400,000 home. This growth is compounded over time, often outpacing the costs of maintenance and taxes. However, appreciation is not guaranteed and varies wildly by location. A stagnation or drop in home prices can quickly turn a home into a liability, especially if you need to sell during a downturn. Our calculator allows you to stress-test your decision with different appreciation rates.</p>
+            </section>
+
+            <section>
+                <h2>The opportunity cost of a down payment</h2>
+                <p>The "opportunity cost" is the potential profit you give up by choosing one investment over another. When you buy a home, you tie up a large amount of cash in a down payment. If you had rented instead, that money could have been invested in assets like stocks, bonds, or a retirement account. Over 10 to 30 years, the compounded growth of that investment can be substantial. Our calculator factors this in by comparing your projected home equity with the projected value of your down payment (plus any monthly savings from renting) if it were invested at your chosen rate of return.</p>
+            </section>
+
+            <section id="faq">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h3>How much should I put down?</h3>
+                        <p>While 20% is the traditional standard to avoid Private Mortgage Insurance (PMI), many buyers put down as little as 3% or 3.5%. A larger down payment reduces your monthly cost and interest paid but increases your opportunity cost.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>What is a good mortgage rate?</h3>
+                        <p>A "good" rate depends on current market conditions and your credit score. Historically, rates have averaged around 6-7%, but they fluctuate. Always shop around with different lenders to find the best available rate for your profile.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Does the calculator include maintenance?</h3>
+                        <p>Yes, we automatically include an annual maintenance estimate equal to 1% of the home's value, which is the industry standard for keeping a property in good condition.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>What are closing costs?</h3>
+                        <p>Closing costs are fees paid at the end of a real estate transaction. They include loan origination fees, appraisal fees, title insurance, taxes, and record-keeping fees. They typically total 2% to 5% of the purchase price.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Can I change the time horizon?</h3>
+                        <p>Yes, you can use the slider to see how your decision changes if you stay for 1 year versus 30 years. This is crucial for understanding the impact of transaction costs over time.</p>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Rent vs Buy Calculator. All rights reserved.</p>
+            <p>Disclaimer: This calculator is for educational purposes only. Financial decisions should be made with a professional advisor.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
