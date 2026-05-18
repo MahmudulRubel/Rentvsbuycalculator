@@ -10,4 +10,8 @@
   <url><loc>https://housingtoolkit.com/rent-increase/</loc><priority>0.7</priority><changefreq>monthly</changefreq><lastmod>2026-05-01</lastmod></url>
   <url><loc>https://housingtoolkit.com/property-tax/</loc><priority>0.7</priority><changefreq>monthly</changefreq><lastmod>2026-05-01</lastmod></url>
   <url><loc>https://housingtoolkit.com/cost-of-living/</loc><priority>0.7</priority><changefreq>monthly</changefreq><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://housingtoolkit.com/privacy/</loc><priority>0.3</priority><changefreq>yearly</changefreq></url>
+  <url><loc>https://housingtoolkit.com/terms/</loc><priority>0.3</priority><changefreq>yearly</changefreq></url>
+  <url><loc>https://housingtoolkit.com/disclaimer/</loc><priority>0.3</priority><changefreq>yearly</changefreq></url>
+  <url><loc>https://housingtoolkit.com/about/</loc><priority>0.5</priority><changefreq>yearly</changefreq></url>
 </urlset>

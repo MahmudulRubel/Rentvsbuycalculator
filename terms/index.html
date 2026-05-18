@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Terms of Use | HousingToolkit</title>
+    <meta name="description" content="Review the Terms of Use for HousingToolkit. Understand our terms, conditions, and disclaimers before using our free calculators.">
+    <link rel="canonical" href="https://housingtoolkit.com/terms/">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Terms of Use | HousingToolkit">
+    <meta property="og:description" content="Review the Terms of Use for HousingToolkit. Understand our terms, conditions, and disclaimers before using our free calculators.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://housingtoolkit.com/terms/">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1E40AF;
+            --primary-light: #EFF6FF;
+            --background: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --border: #E2E8F0;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Sticky Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            height: 64px;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-links { display: flex; align-items: center; gap: 24px; }
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: var(--primary); }
+        .nav-btn {
+            border: 1px solid var(--primary);
+            padding: 8px 16px;
+            border-radius: 99px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover { background: var(--primary-light); }
+
+        /* Hero */
+        .hero {
+            padding: 48px 0 24px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.025em;
+            margin-bottom: 8px;
+        }
+        .hero .last-updated {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Card Content */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 48px;
+        }
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-top: 32px;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+        h2:first-of-type { margin-top: 0; }
+        p {
+            font-size: 0.975rem;
+            color: #475569;
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+        p:last-child { margin-bottom: 0; }
+        
+        /* Amber Alert Box */
+        .alert-warning {
+            background: #FFFBEB;
+            border-left: 4px solid #F59E0B;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin: 24px 0;
+        }
+        .alert-warning p {
+            color: #B45309;
+            font-weight: 600;
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 0;
+            background: #0F172A;
+            color: #94A3B8;
+            text-align: center;
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border);
+        }
+        .footer-logo {
+            font-weight: 800;
+            color: white;
+            font-size: 1.1rem;
+            text-decoration: none;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+        .footer-links {
+            margin: 16px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: #94A3B8;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+        .footer-links a:hover { color: white; }
+        
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 1.75rem; }
+            .card { padding: 24px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="../index.html" class="logo">🏠 HousingToolkit</a>
+            <div class="nav-links">
+                <a href="../index.html#tools" class="nav-link">Tools</a>
+                <a href="../index.html#how-it-works" class="nav-link">How It Works</a>
+                <a href="../index.html#faq" class="nav-link">FAQ</a>
+                <a href="../index.html#tools" class="nav-btn">All Tools ↓</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="container">
+            <h1>Terms of Use</h1>
+            <p class="last-updated">Last Updated: May 2026</p>
+        </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="container">
+        <div class="card">
+            <h2>Acceptance of Terms</h2>
+            <p>By accessing and using HousingToolkit.com, you agree to comply with and be bound by these Terms of Use. If you do not agree, please do not use our services.</p>
+
+            <!-- IMPORTANT Amber Callout Box -->
+            <div class="alert-warning">
+                <p>⚠️ IMPORTANT: All calculators and tools on this site are for informational and educational purposes only. Results are estimates only. Nothing on this site constitutes financial, legal, tax or investment advice. Always consult a qualified professional before making any financial decision.</p>
+            </div>
+
+            <h2>Accuracy of Calculators</h2>
+            <p>We strive for complete mathematical accuracy but cannot guarantee results are 100% correct for your specific tax, regional, or banking situation. Interest rates, property tax parameters, state closing regulations, and general market conditions change constantly and vary heavily by location.</p>
+
+            <h2>Affiliate Links</h2>
+            <p>This site participates in affiliate marketing programs. We may earn referral commissions from products or services recommended through our links at zero additional cost to you.</p>
+
+            <h2>Intellectual Property</h2>
+            <p>All tool scripts, structural content, charts, visual layouts, and source code on this website are owned exclusively by HousingToolkit and are protected under international copyright laws.</p>
+
+            <h2>Limitation of Liability</h2>
+            <p>HousingToolkit, its developers, and partners shall not be held liable for any direct, indirect, or incidental damages or financial decisions made based on outputs provided by our tools. All calculations are used at your own risk.</p>
+
+            <h2>Governing Law</h2>
+            <p>These terms and conditions are governed by and construed in accordance with the laws of the United States without regard to its conflict of law regulations.</p>
+
+            <h2>Changes to These Terms</h2>
+            <p>We reserve the right to modify or replace these Terms of Use at any time. The updated date at the top of the page will represent the current active version.</p>
+
+            <h2>Contact Us</h2>
+            <p>If you have any questions or concerns regarding our terms, feel free to contact us at <a href="mailto:legal@housingtoolkit.com" style="color: var(--primary); text-decoration: none; font-weight: 600;">legal@housingtoolkit.com</a></p>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <a href="../index.html" class="footer-logo">🏠 HousingToolkit</a>
+            <p>Unbiased, free housing tools to simplify your financial journey.</p>
+            <div class="footer-links">
+                <a href="../privacy/index.html">Privacy Policy</a>
+                <a href="../terms/index.html">Terms of Use</a>
+                <a href="../disclaimer/index.html">Disclaimer</a>
+                <a href="../about/index.html">About Us</a>
+            </div>
+            <p style="font-size: 0.75rem; color: #64748B; margin-top: 16px;">&copy; 2026 HousingToolkit. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

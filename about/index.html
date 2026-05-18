@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>About HousingToolkit | Free Housing Calculators</title>
+    <meta name="description" content="Learn about HousingToolkit, our mission, our free unbiased calculators, and our team dedicated to simplifying home purchase decisions.">
+    <link rel="canonical" href="https://housingtoolkit.com/about/">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="About HousingToolkit | Free Housing Calculators">
+    <meta property="og:description" content="Learn about HousingToolkit, our mission, our free unbiased calculators, and our team dedicated to simplifying home purchase decisions.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://housingtoolkit.com/about/">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FAQPage JSON-LD Schema -->
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Is HousingToolkit a bank or lender?","acceptedAnswer":{"@type":"Answer","text":"No. HousingToolkit is a completely independent, neutral resource with no affiliation to any lender or real estate brokerage."}},
+      {"@type":"Question","name":"Do I need to sign up to use the tools?","acceptedAnswer":{"@type":"Answer","text":"No signup or account registration is ever required. All tools are open and free for anyone to use forever."}},
+      {"@type":"Question","name":"How are calculations kept up to date?","acceptedAnswer":{"@type":"Answer","text":"We regularly review and update default state tax rates, property tax parameters, and loan formulas to ensure accuracy."}}
+    ]}</script>
+
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1E40AF;
+            --primary-light: #EFF6FF;
+            --background: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --border: #E2E8F0;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Sticky Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            height: 64px;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-links { display: flex; align-items: center; gap: 24px; }
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: var(--primary); }
+        .nav-btn {
+            border: 1px solid var(--primary);
+            padding: 8px 16px;
+            border-radius: 99px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover { background: var(--primary-light); }
+
+        /* Hero */
+        .hero {
+            padding: 56px 0 24px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.025em;
+            margin-bottom: 8px;
+        }
+        .hero .subtitle {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Card Content */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 48px;
+        }
+        
+        /* Grid items */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 28px 0;
+        }
+        .feature-item {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+        }
+        .feature-item h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+        .feature-item p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-top: 32px;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+        h2:first-of-type { margin-top: 0; }
+        p {
+            font-size: 0.975rem;
+            color: #475569;
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+        p:last-child { margin-bottom: 0; }
+
+        /* Footer */
+        .footer {
+            padding: 40px 0;
+            background: #0F172A;
+            color: #94A3B8;
+            text-align: center;
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border);
+        }
+        .footer-logo {
+            font-weight: 800;
+            color: white;
+            font-size: 1.1rem;
+            text-decoration: none;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+        .footer-links {
+            margin: 16px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: #94A3B8;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+        .footer-links a:hover { color: white; }
+        
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 1.75rem; }
+            .card { padding: 24px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="../index.html" class="logo">🏠 HousingToolkit</a>
+            <div class="nav-links">
+                <a href="../index.html#tools" class="nav-link">Tools</a>
+                <a href="../index.html#how-it-works" class="nav-link">How It Works</a>
+                <a href="../index.html#faq" class="nav-link">FAQ</a>
+                <a href="../index.html#tools" class="nav-btn">All Tools ↓</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="container">
+            <h1>About HousingToolkit</h1>
+            <p class="subtitle">Free, accurate housing calculators for every stage of your homebuying journey</p>
+        </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="container">
+        <div class="card">
+            
+            <h2>Our Mission</h2>
+            <p>HousingToolkit was built because buying or renting a home is one of the biggest financial decisions of your life — and the tools to help you make that decision should be free, clear and unbiased. No paywalls. No signup. No data collection. Just answers.</p>
+
+            <h2>What We Build</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h3>📊 Free Tools</h3>
+                    <p>10 calculators covering every dynamic housing decision you need to make.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>⚡ Accurate Data</h3>
+                    <p>Updated regularly with current rates, closing indices, and local tax data.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🔒 Private & Direct</h3>
+                    <p>All calculations happen securely in your browser. We never see your data.</p>
+                </div>
+            </div>
+
+            <h2>Why Trust Us</h2>
+            <p>We are not a bank, mortgage lender, or real estate agent. We have zero commercial interest in whether you decide to rent or buy, or which loan program you select. Our only goal is to provide you with the clearest, mathematically rigorous financial picture possible so you can proceed with total confidence.</p>
+
+            <h2>Affiliate Disclosure</h2>
+            <p>To keep this site free, some links are affiliate links. We only recommend services we have vetted thoroughly and believe are genuinely useful to our audience. We earn commissions from these selections at no extra cost to you.</p>
+
+            <h2>Contact Us</h2>
+            <p>Have questions, feedback, or calculator feature requests? Email us at <a href="mailto:hello@housingtoolkit.com" style="color: var(--primary); text-decoration: none; font-weight: 600;">hello@housingtoolkit.com</a>. Check out our <a href="../privacy/index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Privacy Policy</a> and <a href="../terms/index.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">Terms of Use</a> to learn more about how we manage our tools.</p>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <a href="../index.html" class="footer-logo">🏠 HousingToolkit</a>
+            <p>Unbiased, free housing tools to simplify your financial journey.</p>
+            <div class="footer-links">
+                <a href="../privacy/index.html">Privacy Policy</a>
+                <a href="../terms/index.html">Terms of Use</a>
+                <a href="../disclaimer/index.html">Disclaimer</a>
+                <a href="../about/index.html">About Us</a>
+            </div>
+            <p style="font-size: 0.75rem; color: #64748B; margin-top: 16px;">&copy; 2026 HousingToolkit. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
