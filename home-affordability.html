@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>How Much House Can I Afford? Calculator (2026)</title>
+    <meta name="description" content="Find out exactly how much home you can afford based on your income, debts and down payment. Free calculator. Model conservative vs aggressive budgets.">
+    <link rel="canonical" href="https://housingtoolkit.com/home-affordability/">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="How Much House Can I Afford? Calculator (2026)">
+    <meta property="og:description" content="Find out exactly how much home you can afford based on your income, debts and down payment. Free calculator. Model conservative vs aggressive budgets.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://housingtoolkit.com/home-affordability/">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+    <style>
+        /* Unified SaaS Design Tokens */
+        :root {
+            --primary: #2563EB;
+            --primary-hover: #1D4ED8;
+            --primary-light: #EFF6FF;
+            --success: #10B981;
+            --success-light: #ECFDF5;
+            --danger: #EF4444;
+            --danger-light: #FEF2F2;
+            --warning: #F59E0B;
+            --warning-light: #FEF3C7;
+            --bg: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --border: #E2E8F0;
+            --input-bg: #F1F5F9;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.02);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Base Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Sticky Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            height: 64px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+
+        /* Tool Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background-color: var(--card-bg);
+            min-width: 260px;
+            box-shadow: var(--shadow-lg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            z-index: 101;
+            padding: 8px;
+            grid-template-columns: 1fr;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: grid;
+        }
+
+        .dropdown-item {
+            padding: 10px 14px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 40px 0 24px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 32px;
+            margin-top: 16px;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Panels */
+        .panel {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        .sticky-panel {
+            position: sticky;
+            top: 80px;
+        }
+
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .badge-updated {
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 4px 8px;
+            border-radius: 99px;
+        }
+
+        /* Input Elements */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .input-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* CSS Tooltip */
+        .tooltip-trigger {
+            cursor: help;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            font-style: normal;
+        }
+
+        .tooltip-trigger:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%) scale(0.95);
+            background: var(--text-main);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            white-space: normal;
+            width: 220px;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease, transform 0.15s ease;
+            z-index: 50;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .tooltip:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        /* Input Controls */
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            height: 48px;
+            transition: box-shadow 0.2s, background-color 0.2s;
+        }
+
+        .input-wrapper:focus-within {
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            border: 1px solid var(--primary);
+        }
+
+        .input-prefix {
+            padding-left: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 1rem;
+            user-select: none;
+        }
+
+        .input-suffix {
+            padding-right: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.9rem;
+            user-select: none;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            padding: 0 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            font-family: inherit;
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+        }
+
+        /* Range Slider Styling */
+        .slider-wrapper {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 99px;
+            background: var(--border);
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.1s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        /* Results Panel CSS */
+        .results-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .results-label {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .results-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--success);
+            line-height: 1.1;
+        }
+
+        .verdict-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 99px;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .badge-positive {
+            background-color: var(--success-light);
+            color: var(--success);
+        }
+
+        .badge-warning {
+            background-color: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .badge-danger {
+            background-color: var(--danger-light);
+            color: var(--danger);
+        }
+
+        /* Affordability Scenarios Grid */
+        .scenarios-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .scenario-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .scenario-card:hover, .scenario-card.selected {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .scenario-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .scenario-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .scenario-dti {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .scenario-amount {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-main);
+            text-align: right;
+        }
+
+        .scenario-card.conservative {
+            border-left: 5px solid var(--success);
+        }
+
+        .scenario-card.moderate {
+            border-left: 5px solid var(--primary);
+        }
+
+        .scenario-card.aggressive {
+            border-left: 5px solid var(--warning);
+        }
+
+        /* Chart Area */
+        .chart-container {
+            position: relative;
+            margin: 24px auto 8px;
+            width: 100%;
+            height: 220px;
+        }
+
+        .summary-text {
+            background-color: var(--bg);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 16px;
+            border-left: 4px solid var(--success);
+        }
+
+        .summary-text strong {
+            color: var(--text-main);
+        }
+
+        /* Danger Overlay Zone display */
+        .dti-alert-box {
+            display: none;
+            background-color: var(--danger-light);
+            border: 1px solid #FECACA;
+            color: var(--danger);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        /* SEO & FAQ Styles */
+        .content-section {
+            margin-top: 48px;
+            padding: 32px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .content-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content-container h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            margin-top: 32px;
+            letter-spacing: -0.02em;
+        }
+
+        .content-container h2:first-of-type {
+            margin-top: 0;
+        }
+
+        .content-container p {
+            font-size: 1.025rem;
+            line-height: 1.6;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        /* FAQ details */
+        .faq-accordion {
+            margin-top: 16px;
+        }
+
+        details {
+            background: white;
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        details[open] {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            padding: 16px 20px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            list-style: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: "+";
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+        }
+
+        details[open] summary::after {
+            content: "−";
+            color: var(--primary);
+        }
+
+        .faq-answer {
+            padding: 0 20px 16px;
+            font-size: 0.95rem;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        /* Ads Zone */
+        .ad-zone {
+            background: #F1F5F9;
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90px;
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .ad-zone::before {
+            content: "SPONSORED";
+            position: absolute;
+            top: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .ad-rect {
+            min-height: 250px;
+            max-width: 336px;
+            margin: 20px auto;
+        }
+
+        /* Related Tools Cards */
+        .related-section {
+            margin-top: 48px;
+            padding: 48px 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .related-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .related-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            background: var(--bg);
+            text-decoration: none;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .related-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            background: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .related-icon {
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .related-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        .related-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .related-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 0;
+            background: #0F172A;
+            color: #94A3B8;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        .footer-logo {
+            font-weight: 800;
+            color: white;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .footer-logo svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+        }
+
+        .footer p {
+            margin-bottom: 8px;
+        }
+
+        .footer-links {
+            margin: 16px 0;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #94A3B8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+            .panel {
+                padding: 20px;
+            }
+        }
+    </style>
+
+    <!-- Schema Markup -->
+    
+    <!-- FAQPage Schema -->
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"How does the home affordability calculator work?","acceptedAnswer":{"@type":"Answer","text":"Our calculator evaluates your gross monthly income and existing debts against standard lending debt-to-income (DTI) rules to estimate a safe target home price."}},
+      {"@type":"Question","name":"What is the 28/36 debt-to-income rule?","acceptedAnswer":{"@type":"Answer","text":"The 28/36 rule states that your housing costs should not exceed 28% of your gross income, and your total monthly debt payments (housing + debt) should not exceed 36%."}},
+      {"@type":"Question","name":"How does a down payment affect my budget?","acceptedAnswer":{"@type":"Answer","text":"A larger down payment directly increases your affordable home price because it reduces the mortgage size you need, keeping your monthly payments within safe limits."}}
+    ]}</script>
+
+</head>
+<body>
+
+    <!-- Sticky Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                HousingToolkit
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Rent vs Buy</a>
+                <div class="dropdown">
+                    <a href="#" class="nav-link active" style="display:flex; align-items:center; gap:4px;">
+                        Calculators
+                        <svg style="width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2;" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="mortgage-calculator.html" class="dropdown-item">Mortgage Calculator</a>
+                        <a href="home-affordability.html" class="dropdown-item">Home Affordability</a>
+                        <a href="down-payment-savings.html" class="dropdown-item">Down Payment Savings</a>
+                        <a href="refinance-calculator.html" class="dropdown-item">Mortgage Refinance</a>
+                        <a href="home-equity.html" class="dropdown-item">Home Equity Calculator</a>
+                        <a href="closing-costs.html" class="dropdown-item">Closing Costs Estimator</a>
+                        <a href="rent-increase-calculator.html" class="dropdown-item">Rent Increase Calculator</a>
+                        <a href="property-tax.html" class="dropdown-item">Property Tax Calculator</a>
+                        <a href="cost-of-living.html" class="dropdown-item">Cost of Living Comparator</a>
+                        <a href="buyer-checklist.html" class="dropdown-item">Homebuyer Checklist</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <h1>How Much House Can I Afford? Calculator (2026)</h1>
+            <p>Determine exactly how much house you can afford using lender DTI rules based on your income, debts, and savings.</p>
+        </header>
+
+        <!-- AD SLOT TOP -->
+        <div class="ad-zone">
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Leaderboard Advertisement Slot (728x90)</div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Left Side: Inputs -->
+            <div class="panel">
+                <h3 class="panel-title">
+                    Your Financial Profile
+                    <span class="badge-updated">Last updated: 2026</span>
+                </h3>
+
+                <!-- Annual Income Input -->
+                <div class="input-group">
+                    <div class="input-label-container">
+                        <label for="annualIncome" class="input-label">
+                            Annual Gross Income
+                            <span class="tooltip tooltip-trigger" data-tooltip="Your total yearly household income before taxes and deductions.">ⓘ</span>
+                        </label>
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">$</span>
+                        <input type="number" id="annualIncome" value="95000" min="0" step="5000">
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="annualIncomeSlider" min="20000" max="400000" step="5000" value="95000">
+                    </div>
+                </div>
+
+                <!-- Monthly Debts Input -->
+                <div class="input-group">
+                    <div class="input-label-container">
+                        <label for="monthlyDebts" class="input-label">
+                            Monthly Debt Payments
+                            <span class="tooltip tooltip-trigger" data-tooltip="Total monthly minimum payments for auto loans, student loans, credit cards, and child support (do not include current rent).">ⓘ</span>
+                        </label>
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">$</span>
+                        <input type="number" id="monthlyDebts" value="450" min="0" step="50">
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="monthlyDebtsSlider" min="0" max="5000" step="50" value="450">
+                    </div>
+                </div>
+
+                <!-- Down Payment Input -->
+                <div class="input-group">
+                    <div class="input-label-container">
+                        <label for="downPayment" class="input-label">
+                            Available Down Payment
+                            <span class="tooltip tooltip-trigger" data-tooltip="The cash you have saved to pay upfront at closing. This increases your buying power.">ⓘ</span>
+                        </label>
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">$</span>
+                        <input type="number" id="downPayment" value="50000" min="0" step="2000">
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="downPaymentSlider" min="0" max="250000" step="2000" value="50000">
+                    </div>
+                </div>
+
+                <!-- Mortgage Interest Rate Input -->
+                <div class="input-group">
+                    <div class="input-label-container">
+                        <label for="interestRate" class="input-label">
+                            Mortgage Interest Rate
+                            <span class="tooltip tooltip-trigger" data-tooltip="The annual interest rate for your 30-year fixed-rate mortgage.">ⓘ</span>
+                        </label>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="number" id="interestRate" value="6.5" min="0.5" max="15" step="0.1">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="interestRateSlider" min="1" max="12" step="0.1" value="6.5">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Sticky Results -->
+            <div class="panel sticky-panel">
+                <div class="results-header">
+                    <span class="results-label" id="scenarioLabel">Affordable Home Price (Conservative)</span>
+                    <div class="results-value" id="affordableHomePriceResult">$318,340</div>
+                    <span class="verdict-badge badge-positive" id="verdictBadgeText">Affordable Range</span>
+                </div>
+
+                <!-- DTI Danger Alert Box -->
+                <div class="dti-alert-box" id="dtiAlert">
+                    ⚠️ Warning: Your total debts put your DTI above 36%. This might make mortgage qualification difficult.
+                </div>
+
+                <!-- Affordability Scenarios Toggles -->
+                <div class="scenarios-container">
+                    <div class="scenario-card conservative selected" data-scenario="conservative">
+                        <div class="scenario-info">
+                            <span class="scenario-title">Conservative Budget</span>
+                            <span class="scenario-dti">28% Front-end / 36% Back-end</span>
+                        </div>
+                        <span class="scenario-amount" id="valConservative">$318,340</span>
+                    </div>
+                    <div class="scenario-card moderate" data-scenario="moderate">
+                        <div class="scenario-info">
+                            <span class="scenario-title">Moderate Budget</span>
+                            <span class="scenario-dti">32% Front-end / 40% Back-end</span>
+                        </div>
+                        <span class="scenario-amount" id="valModerate">$367,520</span>
+                    </div>
+                    <div class="scenario-card aggressive" data-scenario="aggressive">
+                        <div class="scenario-info">
+                            <span class="scenario-title">Aggressive Budget</span>
+                            <span class="scenario-dti">38% Front-end / 45% Back-end</span>
+                        </div>
+                        <span class="scenario-amount" id="valAggressive">$441,290</span>
+                    </div>
+                </div>
+
+                <!-- AD SLOT RESULTS -->
+                <div class="ad-zone ad-rect">
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Rectangle Advertisement Slot (336x280)</div>
+                </div>
+
+                <!-- Chart.js Visualization -->
+                <div class="chart-container">
+                    <canvas id="scenariosChart"></canvas>
+                </div>
+
+                <div class="summary-text" id="plainTextSummary">
+                    Based on your gross monthly income of <strong>$7,917</strong>, your conservative housing payment budget is <strong>$2,217/month</strong>.
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO Article Below the Fold -->
+        
+    <!-- SECTION - HOW TO USE -->
+    <section class="container" style="max-width: 760px; margin: 48px auto; padding: 0 20px;">
+        <h2>How to Use This Calculator</h2>
+        <p style="color: var(--text-muted, #64748B); margin-top: 12px; line-height: 1.6; font-size: 1.025rem;">
+            The Home Affordability Calculator evaluates your maximum safe purchase price by analyzing your financial profiles against commercial underwriting guidelines. To find your budget, enter your pre-tax annual household gross income and your recurring monthly debt liabilities, such as auto loans, student loans, or credit cards. Input your target interest rate, down payment cash, property tax rate, homeowners insurance premium, and monthly HOA fees. Our calculator uses the standard 28/36 debt-to-income (DTI) rules to outline three scenarios: Conservative, Moderate, and Aggressive affordability. A dynamic horizontal bar chart displays your affordable home price alongside an active gauge indicating whether your proposed monthly housing expenses fall into the safety zone or enter the warning threshold, giving you total confidence in your purchasing decisions.
+        </p>
+    </section>
+
+    <!-- SECTION - FAQ ACCORDION -->
+    <section class="faq-section" id="faq" style="max-width: 760px; margin: 48px auto; padding: 0 20px;">
+        <h2 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 20px; text-align: center;">Frequently Asked Questions</h2>
+        <div class="faq-accordion" style="display: flex; flex-direction: column; gap: 12px;">
+            
+            <details style="background: white; border: 1px solid var(--border, #E2E8F0); border-radius: var(--radius-md, 8px); overflow: hidden; transition: all 0.2s;">
+                <summary style="padding: 16px 20px; font-weight: 700; font-size: 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none;">
+                    <span>How does the home affordability calculator work?</span>
+                    <span style="font-weight: normal; color: var(--text-muted, #64748B); font-size: 1.2rem;">+</span>
+                </summary>
+                <div style="padding: 0 20px 16px; font-size: 0.95rem; color: #475569; line-height: 1.5; border-top: 1px solid var(--border, #E2E8F0); margin-top: 0; padding-top: 12px;">
+                    Our calculator evaluates your gross monthly income and existing debts against standard lending debt-to-income (DTI) rules to estimate a safe target home price.
+                </div>
+            </details>
+            
+            <details style="background: white; border: 1px solid var(--border, #E2E8F0); border-radius: var(--radius-md, 8px); overflow: hidden; transition: all 0.2s;">
+                <summary style="padding: 16px 20px; font-weight: 700; font-size: 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none;">
+                    <span>What is the 28/36 debt-to-income rule?</span>
+                    <span style="font-weight: normal; color: var(--text-muted, #64748B); font-size: 1.2rem;">+</span>
+                </summary>
+                <div style="padding: 0 20px 16px; font-size: 0.95rem; color: #475569; line-height: 1.5; border-top: 1px solid var(--border, #E2E8F0); margin-top: 0; padding-top: 12px;">
+                    The 28/36 rule states that your housing costs should not exceed 28% of your gross income, and your total monthly debt payments (housing + debt) should not exceed 36%.
+                </div>
+            </details>
+            
+            <details style="background: white; border: 1px solid var(--border, #E2E8F0); border-radius: var(--radius-md, 8px); overflow: hidden; transition: all 0.2s;">
+                <summary style="padding: 16px 20px; font-weight: 700; font-size: 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none;">
+                    <span>How does a down payment affect my budget?</span>
+                    <span style="font-weight: normal; color: var(--text-muted, #64748B); font-size: 1.2rem;">+</span>
+                </summary>
+                <div style="padding: 0 20px 16px; font-size: 0.95rem; color: #475569; line-height: 1.5; border-top: 1px solid var(--border, #E2E8F0); margin-top: 0; padding-top: 12px;">
+                    A larger down payment directly increases your affordable home price because it reduces the mortgage size you need, keeping your monthly payments within safe limits.
+                </div>
+            </details>
+            
+        </div>
+    </section>
+
+    <!-- SECTION - ALSO TRY RELATED LINKS -->
+    <section class="also-try-section" style="max-width: 760px; margin: 48px auto; padding: 24px 20px 0; border-top: 1px solid var(--border, #E2E8F0);">
+        <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main, #0F172A);">Also Try</h3>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            
+            <a href="index.html" style="background: white; border: 1px solid var(--border, #E2E8F0); padding: 8px 16px; border-radius: var(--radius-md, 8px); font-weight: 700; color: var(--primary, #2563EB); text-decoration: none; font-size: 0.9rem; box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06)); transition: all 0.2s;">Rent vs Buy Calculator</a>
+            
+            <a href="mortgage-calculator.html" style="background: white; border: 1px solid var(--border, #E2E8F0); padding: 8px 16px; border-radius: var(--radius-md, 8px); font-weight: 700; color: var(--primary, #2563EB); text-decoration: none; font-size: 0.9rem; box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06)); transition: all 0.2s;">Mortgage Calculator</a>
+            
+            <a href="down-payment-savings.html" style="background: white; border: 1px solid var(--border, #E2E8F0); padding: 8px 16px; border-radius: var(--radius-md, 8px); font-weight: 700; color: var(--primary, #2563EB); text-decoration: none; font-size: 0.9rem; box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06)); transition: all 0.2s;">Down Payment Savings</a>
+            
+            <a href="property-tax.html" style="background: white; border: 1px solid var(--border, #E2E8F0); padding: 8px 16px; border-radius: var(--radius-md, 8px); font-weight: 700; color: var(--primary, #2563EB); text-decoration: none; font-size: 0.9rem; box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06)); transition: all 0.2s;">Property Tax by State</a>
+            
+        </div>
+    </section>
+    
+
+        <!-- AD SLOT BOTTOM -->
+        <div class="ad-zone">
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Leaderboard Advertisement Slot (728x90)</div>
+        </div>
+
+        <!-- You Might Also Need: Related Tools Grid -->
+        <section class="related-section">
+            <h3 class="related-title">You Might Also Need</h3>
+            <div class="related-grid">
+                <a href="mortgage-calculator.html" class="related-card">
+                    <div class="related-icon">
+                        <svg viewBox="0 0 24 24"><path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h4>Mortgage Calculator</h4>
+                    <p>Get a comprehensive monthly expense and amortization breakdown for your home loan.</p>
+                </a>
+                <a href="down-payment-savings.html" class="related-card">
+                    <div class="related-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h4>Down Payment Savings</h4>
+                    <p>Calculate exactly how long it will take to save your target down payment amount.</p>
+                </a>
+                <a href="closing-costs.html" class="related-card">
+                    <div class="related-icon">
+                        <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h4>Closing Costs Estimator</h4>
+                    <p>Estimate the transaction fees and closing expenses by state.</p>
+                </a>
+                <a href="index.html" class="related-card">
+                    <div class="related-icon">
+                        <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    </div>
+                    <h4>Rent vs Buy Calculator</h4>
+                    <p>Compare cost paths to see if renting or buying is the better long-term choice.</p>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <a href="index.html" class="footer-logo">
+                <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                HousingToolkit
+            </a>
+            <p>&copy; 2026 HousingToolkit. website. All rights reserved.</p>
+            <p>Calculations provided are for planning and estimation purposes only. Consult with a qualified professional before making financial decisions.</p>
+            <div class="footer-links">
+                <a href="index.html">Rent vs Buy</a>
+                <a href="mortgage-calculator.html">Mortgage Payment</a>
+                <a href="home-affordability.html">Home Affordability</a>
+                <a href="down-payment-savings.html">Down Payment Savings</a>
+                <a href="refinance-calculator.html">Mortgage Refinance</a>
+                <a href="home-equity.html">Home Equity</a>
+                <a href="closing-costs.html">Closing Costs</a>
+                <a href="rent-increase-calculator.html">Rent Increase</a>
+                <a href="property-tax.html">Property Tax</a>
+                <a href="cost-of-living.html">Cost of Living</a>
+                <a href="buyer-checklist.html">Checklist</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        // DOM Elements
+        const annualIncomeInput = document.getElementById('annualIncome');
+        const annualIncomeSlider = document.getElementById('annualIncomeSlider');
+        const monthlyDebtsInput = document.getElementById('monthlyDebts');
+        const monthlyDebtsSlider = document.getElementById('monthlyDebtsSlider');
+        const downPaymentInput = document.getElementById('downPayment');
+        const downPaymentSlider = document.getElementById('downPaymentSlider');
+        const interestRateInput = document.getElementById('interestRate');
+        const interestRateSlider = document.getElementById('interestRateSlider');
+
+        // Results
+        const affordableHomePriceResult = document.getElementById('affordableHomePriceResult');
+        const scenarioLabel = document.getElementById('scenarioLabel');
+        const verdictBadgeText = document.getElementById('verdictBadgeText');
+        const plainTextSummary = document.getElementById('plainTextSummary');
+        const dtiAlert = document.getElementById('dtiAlert');
+
+        const valConservative = document.getElementById('valConservative');
+        const valModerate = document.getElementById('valModerate');
+        const valAggressive = document.getElementById('valAggressive');
+
+        let selectedScenario = 'conservative';
+        let barChart = null;
+
+        // Constants for estimation
+        const TAX_ANNUAL_PCT = 1.2; // 1.2% property tax
+        const INS_ANNUAL_PCT = 0.4; // 0.4% home insurance
+        const HOA_MONTHLY = 150;    // $150/mo HOA
+        const TERM_YEARS = 30;
+
+        // Scenarios Setup
+        const scenarioRules = {
+            conservative: { front: 0.28, back: 0.36 },
+            moderate: { front: 0.32, back: 0.40 },
+            aggressive: { front: 0.38, back: 0.45 }
+        };
+
+        // Slider Setup Helper
+        function setupSliderPair(inputEl, sliderEl, callback) {
+            inputEl.addEventListener('input', (e) => {
+                sliderEl.value = parseFloat(e.target.value) || 0;
+                callback();
+            });
+            sliderEl.addEventListener('input', (e) => {
+                inputEl.value = e.target.value;
+                callback();
+            });
+        }
+
+        setupSliderPair(annualIncomeInput, annualIncomeSlider, calculateAffordability);
+        setupSliderPair(monthlyDebtsInput, monthlyDebtsSlider, calculateAffordability);
+        setupSliderPair(downPaymentInput, downPaymentSlider, calculateAffordability);
+        setupSliderPair(interestRateInput, interestRateSlider, calculateAffordability);
+
+        // Click Scenario Card
+        document.querySelectorAll('.scenario-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedScenario = card.getAttribute('data-scenario');
+                calculateAffordability();
+            });
+        });
+
+        // Helpers
+        function fmt(val) {
+            return '$' + Math.round(val).toLocaleString('en-US');
+        }
+
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const current = Math.floor(progress * (end - start) + start);
+                obj.innerHTML = fmt(current);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    obj.innerHTML = fmt(end);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        let previousResult = 0;
+
+        // Affinity Calculation
+        function calculateAffordability() {
+            const annualIncome = parseFloat(annualIncomeInput.value) || 0;
+            const monthlyDebts = parseFloat(monthlyDebtsInput.value) || 0;
+            const downPayment = parseFloat(downPaymentInput.value) || 0;
+            const interestRate = parseFloat(interestRateInput.value) || 0;
+
+            const monthlyIncome = annualIncome / 12;
+
+            // Mortgage calculation factors
+            const r = (interestRate / 12) / 100;
+            const totalMonths = TERM_YEARS * 12;
+            let mortgageFactor = 0;
+            if (interestRate > 0) {
+                mortgageFactor = (r * Math.pow(1 + r, totalMonths)) / (Math.pow(1 + r, totalMonths) - 1);
+            } else {
+                mortgageFactor = 1 / totalMonths;
+            }
+
+            // Affordability Scenario calculations
+            function getScenarioAffordablePrice(frontDti, backDti) {
+                const maxMonthlyFront = monthlyIncome * frontDti;
+                const maxMonthlyBack = (monthlyIncome * backDti) - monthlyDebts;
+                const allowedMonthly = Math.max(0, Math.min(maxMonthlyFront, maxMonthlyBack));
+
+                // HP = (MonthlyPayment - HOA + DP * mortgageFactor) / (mortgageFactor + Tax/12 + Ins/12)
+                const taxFactor = (TAX_ANNUAL_PCT / 100) / 12;
+                const insFactor = (INS_ANNUAL_PCT / 100) / 12;
+
+                let affordableHP = (allowedMonthly - HOA_MONTHLY + downPayment * mortgageFactor) / (mortgageFactor + taxFactor + insFactor);
+                affordableHP = Math.max(downPayment, affordableHP);
+                return Math.round(affordableHP);
+            }
+
+            const hpConservative = getScenarioAffordablePrice(scenarioRules.conservative.front, scenarioRules.conservative.back);
+            const hpModerate = getScenarioAffordablePrice(scenarioRules.moderate.front, scenarioRules.moderate.back);
+            const hpAggressive = getScenarioAffordablePrice(scenarioRules.aggressive.front, scenarioRules.aggressive.back);
+
+            // Set Scenario Output Labels
+            valConservative.innerHTML = fmt(hpConservative);
+            valModerate.innerHTML = fmt(hpModerate);
+            valAggressive.innerHTML = fmt(hpAggressive);
+
+            // Active calculation based on selection
+            let activePrice = hpConservative;
+            let activeFront = scenarioRules.conservative.front;
+            let activeBack = scenarioRules.conservative.back;
+
+            if (selectedScenario === 'moderate') {
+                activePrice = hpModerate;
+                activeFront = scenarioRules.moderate.front;
+                activeBack = scenarioRules.moderate.back;
+                scenarioLabel.innerHTML = 'Affordable Home Price (Moderate)';
+                verdictBadgeText.innerHTML = 'Moderate Range';
+                verdictBadgeText.className = 'verdict-badge badge-warning';
+            } else if (selectedScenario === 'aggressive') {
+                activePrice = hpAggressive;
+                activeFront = scenarioRules.aggressive.aggressive || 0.38;
+                activeBack = scenarioRules.aggressive.back;
+                scenarioLabel.innerHTML = 'Affordable Home Price (Aggressive)';
+                verdictBadgeText.innerHTML = 'Aggressive Limit';
+                verdictBadgeText.className = 'verdict-badge badge-danger';
+            } else {
+                scenarioLabel.innerHTML = 'Affordable Home Price (Conservative)';
+                verdictBadgeText.innerHTML = 'Affordable Range';
+                verdictBadgeText.className = 'verdict-badge badge-positive';
+            }
+
+            // Animate affordable price value
+            if (previousResult === 0) {
+                affordableHomePriceResult.innerHTML = fmt(activePrice);
+            } else {
+                animateValue(affordableHomePriceResult, previousResult, activePrice, 300);
+            }
+            previousResult = activePrice;
+
+            // Plain text summary update
+            const maxMonthlyFront = monthlyIncome * activeFront;
+            const maxMonthlyBack = (monthlyIncome * activeBack) - monthlyDebts;
+            const allowedMonthly = Math.max(0, Math.min(maxMonthlyFront, maxMonthlyBack));
+
+            plainTextSummary.innerHTML = `Based on your gross monthly income of <strong>${fmt(monthlyIncome)}</strong> and recurring debts of <strong>${fmt(monthlyDebts)}</strong>, your total housing payment budget is capped at <strong>${fmt(allowedMonthly)}/month</strong>. In this range, you can afford a home price of <strong>${fmt(activePrice)}</strong> with a down payment of <strong>${fmt(downPayment)}</strong>.`;
+
+            // DTI danger checker
+            const currentDebtRatio = monthlyIncome > 0 ? (monthlyDebts / monthlyIncome) * 100 : 0;
+            if (currentDebtRatio > 36) {
+                dtiAlert.style.display = 'block';
+            } else {
+                dtiAlert.style.display = 'none';
+            }
+
+            // Update Chart
+            updateChart(hpConservative, hpModerate, hpAggressive);
+        }
+
+        // Horizontal Bar Chart
+        function updateChart(con, mod, agg) {
+            const ctx = document.getElementById('scenariosChart').getContext('2d');
+
+            const data = {
+                labels: ['Conservative', 'Moderate', 'Aggressive'],
+                datasets: [{
+                    label: 'Affordable Price',
+                    data: [con, mod, agg],
+                    backgroundColor: ['#10B981', '#2563EB', '#F59E0B'],
+                    borderRadius: 6,
+                    barThickness: 28,
+                }]
+            };
+
+            if (barChart) {
+                barChart.data = data;
+                barChart.update();
+            } else {
+                barChart = new Chart(ctx, {
+                    type: 'bar', // Horizontal bar is set by indexAxis: 'y'
+                    data: data,
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return ' Affordability: ' + fmt(context.parsed.x);
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return fmt(value);
+                                    }
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Initial trigger
+        window.addEventListener('load', () => {
+            calculateAffordability();
+        });
+    </script>
+</body>
+</html>
