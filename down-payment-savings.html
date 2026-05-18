@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Down Payment Savings Calculator — How Long to Save?</title>
+    <meta name="description" content="See exactly how many months until you can afford a 3%, 10% or 20% down payment on a home. Free tool. Track your monthly milestones and savings progress.">
+    <link rel="canonical" href="https://housingtoolkit.com/down-payment-savings/">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Down Payment Savings Calculator — How Long to Save?">
+    <meta property="og:description" content="See exactly how many months until you can afford a 3%, 10% or 20% down payment on a home. Free tool. Track your monthly milestones and savings progress.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://housingtoolkit.com/down-payment-savings/">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+    <style>
+        /* Unified SaaS Design Tokens */
+        :root {
+            --primary: #2563EB;
+            --primary-hover: #1D4ED8;
+            --primary-light: #EFF6FF;
+            --success: #10B981;
+            --success-light: #ECFDF5;
+            --danger: #EF4444;
+            --danger-light: #FEF2F2;
+            --warning: #F59E0B;
+            --warning-light: #FEF3C7;
+            --bg: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --border: #E2E8F0;
+            --input-bg: #F1F5F9;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.02);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Base Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Sticky Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            height: 64px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+
+        /* Tool Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background-color: var(--card-bg);
+            min-width: 260px;
+            box-shadow: var(--shadow-lg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            z-index: 101;
+            padding: 8px;
+            grid-template-columns: 1fr;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: grid;
+        }
+
+        .dropdown-item {
+            padding: 10px 14px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 40px 0 24px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 32px;
+            margin-top: 16px;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Panels */
+        .panel {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        .sticky-panel {
+            position: sticky;
+            top: 80px;
+        }
+
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .badge-updated {
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 4px 8px;
+            border-radius: 99px;
+        }
+
+        /* Input Elements */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .input-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* CSS Tooltip */
+        .tooltip-trigger {
+            cursor: help;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            font-style: normal;
+        }
+
+        .tooltip-trigger:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%) scale(0.95);
+            background: var(--text-main);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            white-space: normal;
+            width: 220px;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease, transform 0.15s ease;
+            z-index: 50;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .tooltip:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        /* Input Controls */
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            height: 48px;
+            transition: box-shadow 0.2s, background-color 0.2s;
+        }
+
+        .input-wrapper:focus-within {
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            border: 1px solid var(--primary);
+        }
+
+        .input-prefix {
+            padding-left: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 1rem;
+            user-select: none;
+        }
+
+        .input-suffix {
+            padding-right: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.9rem;
+            user-select: none;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            padding: 0 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            font-family: inherit;
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+        }
+
+        /* Range Slider Styling */
+        .slider-wrapper {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 99px;
+            background: var(--border);
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.1s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        /* Results Panel CSS */
+        .results-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .results-label {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .results-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.1;
+        }
+
+        .verdict-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 99px;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .badge-positive {
+            background-color: var(--success-light);
+            color: var(--success);
+        }
+
+        /* Milestones Table List */
+        .milestones-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .milestone-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 14px;
+            background: var(--bg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
+
+        .milestone-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .milestone-pct {
+            font-weight: 800;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .milestone-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .milestone-time {
+            font-weight: 700;
+            color: var(--text-main);
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        /* Chart Area */
+        .chart-container {
+            position: relative;
+            margin: 24px auto 8px;
+            width: 100%;
+            height: 250px;
+        }
+
+        .summary-text {
+            background-color: var(--bg);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 16px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .summary-text strong {
+            color: var(--text-main);
+        }
+
+        /* SEO & FAQ Styles */
+        .content-section {
+            margin-top: 48px;
+            padding: 32px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .content-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content-container h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            margin-top: 32px;
+            letter-spacing: -0.02em;
+        }
+
+        .content-container h2:first-of-type {
+            margin-top: 0;
+        }
+
+        .content-container p {
+            font-size: 1.025rem;
+            line-height: 1.6;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        /* FAQ details */
+        .faq-accordion {
+            margin-top: 16px;
+        }
+
+        details {
+            background: white;
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        details[open] {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            padding: 16px 20px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            list-style: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: "+";
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+        }
+
+        details[open] summary::after {
+            content: "−";
+            color: var(--primary);
+        }
+
+        .faq-answer {
+            padding: 0 20px 16px;
+            font-size: 0.95rem;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        /* Ads Zone */
+        .ad-zone {
+            background: #F1F5F9;
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90px;
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .ad-zone::before {
+            content: "SPONSORED";
+            position: absolute;
+            top: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .ad-rect {
+            min-height: 250px;
+            max-width: 336px;
+            margin: 20px auto;
+        }
+
+        /* Related Tools Cards */
+        .related-section {
+            margin-top: 48px;
+            padding: 48px 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .related-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .related-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            background: var(--bg);
+            text-decoration: none;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .related-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            background: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .related-icon {
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .related-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        .related-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .related-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 0;
+            background: #0F172A;
+            color: #94A3B8;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        .footer-logo {
+            font-weight: 800;
+            color: white;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .footer-logo svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+        }
+
+        .footer p {
+            margin-bottom: 8px;
+        }
+
+        .footer-links {
+            margin: 16px 0;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #94A3B8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+            .panel {
+                padding: 20px;
+            }
+        }
+    </style>
+
+    <!-- Schema Markup -->
+    
+    <!-- FAQPage Schema -->
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"How long does it take to save for a down payment?","acceptedAnswer":{"@type":"Answer","text":"It depends on your target home price, starting balance, and monthly savings rate. This calculator maps out the exact months required for key targets."}},
+      {"@type":"Question","name":"What is the minimum down payment for a first-time homebuyer?","acceptedAnswer":{"@type":"Answer","text":"Conventional loans allow down payments as low as 3%, FHA loans allow 3.5%, while USDA and VA loans allow 0% down for qualifying properties and borrowers."}},
+      {"@type":"Question","name":"Can I save my down payment in a high-yield savings account?","acceptedAnswer":{"@type":"Answer","text":"Yes! Storing your down payment savings in a high-yield savings account (HYSA) or low-risk investment is highly recommended to earn competitive returns safely."}}
+    ]}</script>
+
+</head>
+<body>
+
+    <!-- Sticky Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                HousingToolkit
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Rent vs Buy</a>
+                <div class="dropdown">
+                    <a href="#" class="nav-link active" style="display:flex; align-items:center; gap:4px;">
+                        Calculators
+                        <svg style="width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2;" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="mortgage-calculator.html" class="dropdown-item">Mortgage Calculator</a>
+                        <a href="home-affordability.html" class="dropdown-item">Home Affordability</a>
+                        <a href="down-payment-savings.html" class="dropdown-item">Down Payment Savings</a>
+                        <a href="refinance-calculator.html" class="dropdown-item">Mortgage Refinance</a>
+                        <a href="home-equity.html" class="dropdown-item">Home Equity Calculator</a>
+                        <a href="closing-costs.html" class="dropdown-item">Closing Costs Estimator</a>
+                        <a href="rent-increase-calculator.html" class="dropdown-item">Rent Increase Calculator</a>
+                        <a href="property-tax.html" class="dropdown-item">Property Tax Calculator</a>
+                        <a href="cost-of-living.html" class="dropdown-item">Cost of Living Comparator</a>
+                        <a href="buyer-checklist.html" class="dropdown-item">Homebuyer Checklist</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <h1>Down Payment Savings Calculator — How Long to Save?</h1>
+            <p>Determine exactly how many months it will take to save for a home down payment using cash goals and compound interest rates.</p>
+        </header>
+
+        <!-- AD SLOT TOP -->
+        <div class="ad-zone">
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Leaderboard Advertisement Slot (728x90)</div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Left Side: Inputs -->
+            <div class="panel">
+                <h3 class="panel-title">
+                    Savings Strategy
+                    <span class="badge-updated">Last updated: 2026</span>
+                </h3>
+
+                <!-- Target Home Price -->
+                <div class="input-group">
+                    <div class="input-label-container">
+                        <label for="targetHomePrice" class="input-label">
+                            Target Home Price
+                            <span class="tooltip tooltip-trigger" data-tooltip="The purchase price of the home you want to buy.">ⓘ</span>
+                        </label>
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">$</span>
+                        <input type="number" id="targetHomePrice" value="400000" min="0" step="5000">
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="targetHomePriceSlider" min="50000" max="1500000" step="5000" value="400000">
+                    </div>
+                </div>
+
+                <!-- Current Savings -->
+                <div class="input-group">
+                    <div class="input-label-container">
+                        <label for="currentSavings" class="input-label">
+                            Current Savings
+                            <span class="tooltip tooltip-trigger" data-tooltip="How much cash you already have set aside for your home down payment.">ⓘ</span>
+                        </label>
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">$</span>
+                        <input type="number" id="currentSavings" value="15000" min="0" step="1000">
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="currentSavingsSlider" min="0" max="250000" step="1000" value="15000">
+                    </div>
+                </div>
+
+                <!-- Monthly Savings Contribution -->
+                <div class="input-group">
+                    <div class="input-label-container">
+                        <label for="monthlySavings" class="input-label">
+                            Monthly Contribution
+                            <span class="tooltip tooltip-trigger" data-tooltip="The amount you can add to your down payment savings balance every month.">ⓘ</span>
+                        </label>
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">$</span>
+                        <input type="number" id="monthlySavings" value="1200" min="0" step="50">
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="monthlySavingsSlider" min="100" max="10000" step="50" value="1200">
+                    </div>
+                </div>
+
+                <!-- HYSA Interest Rate -->
+                <div class="input-group">
+                    <div class="input-label-container">
+                        <label for="hysaRate" class="input-label">
+                            Savings Interest Rate (APY)
+                            <span class="tooltip tooltip-trigger" data-tooltip="The annual yield earned on your savings account. High-yield savings accounts typically offer 4% or more.">ⓘ</span>
+                        </label>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="number" id="hysaRate" value="4.2" min="0" max="10" step="0.1">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="hysaRateSlider" min="0" max="8" step="0.1" value="4.2">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Sticky Results -->
+            <div class="panel sticky-panel">
+                <div class="results-header">
+                    <span class="results-label">Time to Reach 20% Down</span>
+                    <div class="results-value" id="monthsToReachResult">49 Months</div>
+                    <span class="verdict-badge badge-positive" id="yearsResult">4.1 Years</span>
+                </div>
+
+                <!-- AD SLOT RESULTS -->
+                <div class="ad-zone ad-rect">
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Rectangle Advertisement Slot (336x280)</div>
+                </div>
+
+                <!-- Milestones list -->
+                <div class="milestones-list">
+                    <div class="milestone-row">
+                        <div class="milestone-info">
+                            <span class="milestone-pct">3%</span>
+                            <span class="milestone-name">FHA/Conv. Min ($12,000)</span>
+                        </div>
+                        <span class="milestone-time" id="time3">0 Months</span>
+                    </div>
+                    <div class="milestone-row">
+                        <div class="milestone-info">
+                            <span class="milestone-pct">5%</span>
+                            <span class="milestone-name">Conv. Standard ($20,000)</span>
+                        </div>
+                        <span class="milestone-time" id="time5">5 Months</span>
+                    </div>
+                    <div class="milestone-row">
+                        <div class="milestone-info">
+                            <span class="milestone-pct">10%</span>
+                            <span class="milestone-name">Mid-Range ($40,000)</span>
+                        </div>
+                        <span class="milestone-time" id="time10">21 Months</span>
+                    </div>
+                    <div class="milestone-row">
+                        <div class="milestone-info">
+                            <span class="milestone-pct">20%</span>
+                            <span class="milestone-name">PMI Waiver ($80,000)</span>
+                        </div>
+                        <span class="milestone-time" id="time20">49 Months</span>
+                    </div>
+                </div>
+
+                <!-- Chart.js Visualization -->
+                <div class="chart-container">
+                    <canvas id="savingsLineChart"></canvas>
+                </div>
+
+                <div class="summary-text" id="plainTextSummary">
+                    You will reach your <strong>20% down payment</strong> milestone ($80,000) in <strong>49 months</strong>. Along the way, your account will accumulate <strong>$6,832</strong> in compound interest payments.
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO Article Below the Fold -->
+        
+    <!-- SECTION - HOW TO USE -->
+    <section class="container" style="max-width: 760px; margin: 48px auto; padding: 0 20px;">
+        <h2>How to Use This Calculator</h2>
+        <p style="color: var(--text-muted, #64748B); margin-top: 12px; line-height: 1.6; font-size: 1.025rem;">
+            The Down Payment Savings Calculator projects exactly how long it will take to reach your home purchasing goals. To construct your savings timeline, input the target home purchase price and your preferred down payment target percentage. Enter your starting savings balance and the amount you can comfortably contribute to your savings fund each month. Finally, input the expected annual investment or savings interest return. The calculator instantly evaluates your inputs, projecting the exact number of months needed to reach standard key down payment thresholds (3%, 5%, 10%, and 20%). A gorgeous cumulative savings curve chart visualizes your milestones over time, while our Plain-English summaries help you decide if you need to adjust your target home price or accelerate your savings rate.
+        </p>
+    </section>
+
+    <!-- SECTION - FAQ ACCORDION -->
+    <section class="faq-section" id="faq" style="max-width: 760px; margin: 48px auto; padding: 0 20px;">
+        <h2 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 20px; text-align: center;">Frequently Asked Questions</h2>
+        <div class="faq-accordion" style="display: flex; flex-direction: column; gap: 12px;">
+            
+            <details style="background: white; border: 1px solid var(--border, #E2E8F0); border-radius: var(--radius-md, 8px); overflow: hidden; transition: all 0.2s;">
+                <summary style="padding: 16px 20px; font-weight: 700; font-size: 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none;">
+                    <span>How long does it take to save for a down payment?</span>
+                    <span style="font-weight: normal; color: var(--text-muted, #64748B); font-size: 1.2rem;">+</span>
+                </summary>
+                <div style="padding: 0 20px 16px; font-size: 0.95rem; color: #475569; line-height: 1.5; border-top: 1px solid var(--border, #E2E8F0); margin-top: 0; padding-top: 12px;">
+                    It depends on your target home price, starting balance, and monthly savings rate. This calculator maps out the exact months required for key targets.
+                </div>
+            </details>
+            
+            <details style="background: white; border: 1px solid var(--border, #E2E8F0); border-radius: var(--radius-md, 8px); overflow: hidden; transition: all 0.2s;">
+                <summary style="padding: 16px 20px; font-weight: 700; font-size: 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none;">
+                    <span>What is the minimum down payment for a first-time homebuyer?</span>
+                    <span style="font-weight: normal; color: var(--text-muted, #64748B); font-size: 1.2rem;">+</span>
+                </summary>
+                <div style="padding: 0 20px 16px; font-size: 0.95rem; color: #475569; line-height: 1.5; border-top: 1px solid var(--border, #E2E8F0); margin-top: 0; padding-top: 12px;">
+                    Conventional loans allow down payments as low as 3%, FHA loans allow 3.5%, while USDA and VA loans allow 0% down for qualifying properties and borrowers.
+                </div>
+            </details>
+            
+            <details style="background: white; border: 1px solid var(--border, #E2E8F0); border-radius: var(--radius-md, 8px); overflow: hidden; transition: all 0.2s;">
+                <summary style="padding: 16px 20px; font-weight: 700; font-size: 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none;">
+                    <span>Can I save my down payment in a high-yield savings account?</span>
+                    <span style="font-weight: normal; color: var(--text-muted, #64748B); font-size: 1.2rem;">+</span>
+                </summary>
+                <div style="padding: 0 20px 16px; font-size: 0.95rem; color: #475569; line-height: 1.5; border-top: 1px solid var(--border, #E2E8F0); margin-top: 0; padding-top: 12px;">
+                    Yes! Storing your down payment savings in a high-yield savings account (HYSA) or low-risk investment is highly recommended to earn competitive returns safely.
+                </div>
+            </details>
+            
+        </div>
+    </section>
+
+    <!-- SECTION - ALSO TRY RELATED LINKS -->
+    <section class="also-try-section" style="max-width: 760px; margin: 48px auto; padding: 24px 20px 0; border-top: 1px solid var(--border, #E2E8F0);">
+        <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main, #0F172A);">Also Try</h3>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            
+            <a href="index.html" style="background: white; border: 1px solid var(--border, #E2E8F0); padding: 8px 16px; border-radius: var(--radius-md, 8px); font-weight: 700; color: var(--primary, #2563EB); text-decoration: none; font-size: 0.9rem; box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06)); transition: all 0.2s;">Rent vs Buy Calculator</a>
+            
+            <a href="mortgage-calculator.html" style="background: white; border: 1px solid var(--border, #E2E8F0); padding: 8px 16px; border-radius: var(--radius-md, 8px); font-weight: 700; color: var(--primary, #2563EB); text-decoration: none; font-size: 0.9rem; box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06)); transition: all 0.2s;">Mortgage Calculator</a>
+            
+            <a href="home-affordability.html" style="background: white; border: 1px solid var(--border, #E2E8F0); padding: 8px 16px; border-radius: var(--radius-md, 8px); font-weight: 700; color: var(--primary, #2563EB); text-decoration: none; font-size: 0.9rem; box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06)); transition: all 0.2s;">Home Affordability</a>
+            
+            <a href="closing-costs.html" style="background: white; border: 1px solid var(--border, #E2E8F0); padding: 8px 16px; border-radius: var(--radius-md, 8px); font-weight: 700; color: var(--primary, #2563EB); text-decoration: none; font-size: 0.9rem; box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06)); transition: all 0.2s;">Closing Costs Estimator</a>
+            
+        </div>
+    </section>
+    
+
+        <!-- AD SLOT BOTTOM -->
+        <div class="ad-zone">
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Leaderboard Advertisement Slot (728x90)</div>
+        </div>
+
+        <!-- You Might Also Need: Related Tools Grid -->
+        <section class="related-section">
+            <h3 class="related-title">You Might Also Need</h3>
+            <div class="related-grid">
+                <a href="home-affordability.html" class="related-card">
+                    <div class="related-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h4>Home Affordability</h4>
+                    <p>Calculate exactly how much home fits your budget using gross income and debts.</p>
+                </a>
+                <a href="mortgage-calculator.html" class="related-card">
+                    <div class="related-icon">
+                        <svg viewBox="0 0 24 24"><path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h4>Mortgage Calculator</h4>
+                    <p>Get a comprehensive monthly expense and amortization breakdown for your home loan.</p>
+                </a>
+                <a href="index.html" class="related-card">
+                    <div class="related-icon">
+                        <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    </div>
+                    <h4>Rent vs Buy Calculator</h4>
+                    <p>Compare renting vs buying side by side to find your financial breakeven year.</p>
+                </a>
+                <a href="buyer-checklist.html" class="related-card">
+                    <div class="related-icon">
+                        <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    </div>
+                    <h4>Homebuyer Checklist</h4>
+                    <p>Generate a step-by-step roadmap to walk you through the entire purchase process.</p>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <a href="index.html" class="footer-logo">
+                <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                HousingToolkit
+            </a>
+            <p>&copy; 2026 HousingToolkit. website. All rights reserved.</p>
+            <p>Calculations provided are for planning and estimation purposes only. Consult with a qualified professional before making financial decisions.</p>
+            <div class="footer-links">
+                <a href="index.html">Rent vs Buy</a>
+                <a href="mortgage-calculator.html">Mortgage Payment</a>
+                <a href="home-affordability.html">Home Affordability</a>
+                <a href="down-payment-savings.html">Down Payment Savings</a>
+                <a href="refinance-calculator.html">Mortgage Refinance</a>
+                <a href="home-equity.html">Home Equity</a>
+                <a href="closing-costs.html">Closing Costs</a>
+                <a href="rent-increase-calculator.html">Rent Increase</a>
+                <a href="property-tax.html">Property Tax</a>
+                <a href="cost-of-living.html">Cost of Living</a>
+                <a href="buyer-checklist.html">Checklist</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        // DOM Elements
+        const targetHomePriceInput = document.getElementById('targetHomePrice');
+        const targetHomePriceSlider = document.getElementById('targetHomePriceSlider');
+        const currentSavingsInput = document.getElementById('currentSavings');
+        const currentSavingsSlider = document.getElementById('currentSavingsSlider');
+        const monthlySavingsInput = document.getElementById('monthlySavings');
+        const monthlySavingsSlider = document.getElementById('monthlySavingsSlider');
+        const hysaRateInput = document.getElementById('hysaRate');
+        const hysaRateSlider = document.getElementById('hysaRateSlider');
+
+        // Results
+        const monthsToReachResult = document.getElementById('monthsToReachResult');
+        const yearsResult = document.getElementById('yearsResult');
+        const plainTextSummary = document.getElementById('plainTextSummary');
+
+        const time3 = document.getElementById('time3');
+        const time5 = document.getElementById('time5');
+        const time10 = document.getElementById('time10');
+        const time20 = document.getElementById('time20');
+
+        let lineChart = null;
+
+        // Slider Setup Helper
+        function setupSliderPair(inputEl, sliderEl, callback) {
+            inputEl.addEventListener('input', (e) => {
+                sliderEl.value = parseFloat(e.target.value) || 0;
+                callback();
+            });
+            sliderEl.addEventListener('input', (e) => {
+                inputEl.value = e.target.value;
+                callback();
+            });
+        }
+
+        setupSliderPair(targetHomePriceInput, targetHomePriceSlider, () => {
+            // Keep current savings below home price
+            let price = parseFloat(targetHomePriceInput.value) || 0;
+            currentSavingsSlider.max = price;
+            if (parseFloat(currentSavingsInput.value) > price) {
+                currentSavingsInput.value = price;
+                currentSavingsSlider.value = price;
+            }
+            calculateSavings();
+        });
+
+        setupSliderPair(currentSavingsInput, currentSavingsSlider, () => {
+            let price = parseFloat(targetHomePriceInput.value) || 0;
+            let current = parseFloat(currentSavingsInput.value) || 0;
+            if (current > price) {
+                currentSavingsInput.value = price;
+                currentSavingsSlider.value = price;
+            }
+            calculateSavings();
+        });
+
+        setupSliderPair(monthlySavingsInput, monthlySavingsSlider, calculateSavings);
+        setupSliderPair(hysaRateInput, hysaRateSlider, calculateSavings);
+
+        // Helpers
+        function fmt(val) {
+            return '$' + Math.round(val).toLocaleString('en-US');
+        }
+
+        function plural(val, word) {
+            return `${val} ${word}${val === 1 ? '' : 's'}`;
+        }
+
+        // Main Savings Projection Engine
+        function calculateSavings() {
+            const homePrice = parseFloat(targetHomePriceInput.value) || 0;
+            const currentSavings = parseFloat(currentSavingsInput.value) || 0;
+            const monthlyContribution = parseFloat(monthlySavingsInput.value) || 0;
+            const hysaRate = parseFloat(hysaRateInput.value) || 0;
+
+            const rm = (hysaRate / 12) / 100;
+
+            // Targets
+            const target3 = homePrice * 0.03;
+            const target5 = homePrice * 0.05;
+            const target10 = homePrice * 0.10;
+            const target20 = homePrice * 0.20;
+
+            let balance = currentSavings;
+            let month = 0;
+            let reached3 = -1, reached5 = -1, reached10 = -1, reached20 = -1;
+
+            const chartDataPoints = [];
+            const chartLabels = [];
+            let totalInterest = 0;
+
+            // Project month-by-month for chart drawing (cap at 60 months or until 20% is reached plus some buffer)
+            const MAX_MONTHS = 180; // 15 years limit
+
+            while (month <= MAX_MONTHS) {
+                if (balance >= target3 && reached3 === -1) reached3 = month;
+                if (balance >= target5 && reached5 === -1) reached5 = month;
+                if (balance >= target10 && reached10 === -1) reached10 = month;
+                if (balance >= target20 && reached20 === -1) reached20 = month;
+
+                chartDataPoints.push(Math.round(balance));
+                chartLabels.push(`M${month}`);
+
+                if (balance >= target20 && month > 12) {
+                    // Stop drawing soon after hitting 20%
+                    break;
+                }
+
+                // Compounding
+                const interestEarned = balance * rm;
+                totalInterest += interestEarned;
+                balance = balance * (1 + rm) + monthlyContribution;
+                month++;
+            }
+
+            // Fallback for milestones not reached in simulation
+            const getTimelineText = (reachedVal, targetAmt) => {
+                if (currentSavings >= targetAmt) return 'Saved!';
+                if (reachedVal === -1) return '15+ Years';
+                return plural(reachedVal, 'Month');
+            };
+
+            time3.innerHTML = getTimelineText(reached3, target3);
+            time5.innerHTML = getTimelineText(reached5, target5);
+            time10.innerHTML = getTimelineText(reached10, target10);
+            time20.innerHTML = getTimelineText(reached20, target20);
+
+            // Display values for 20% Down
+            if (currentSavings >= target20) {
+                monthsToReachResult.innerHTML = '0 Months';
+                yearsResult.innerHTML = 'Saved!';
+                yearsResult.className = 'verdict-badge badge-positive';
+            } else if (reached20 === -1) {
+                monthsToReachResult.innerHTML = '15+ Years';
+                yearsResult.innerHTML = 'Slow Progress';
+                yearsResult.className = 'verdict-badge badge-warning';
+            } else {
+                monthsToReachResult.innerHTML = plural(reached20, 'Month');
+                const yrs = (reached20 / 12).toFixed(1);
+                yearsResult.innerHTML = `${yrs} Years`;
+                yearsResult.className = 'verdict-badge badge-positive';
+            }
+
+            // Summary text
+            if (currentSavings >= target20) {
+                plainTextSummary.innerHTML = `You have already saved <strong>${fmt(currentSavings)}</strong>, which exceeds the <strong>20% down payment</strong> threshold of <strong>${fmt(target20)}</strong>! You are ready to purchase.`;
+            } else {
+                const monthsText = reached20 === -1 ? 'more than 15 years' : `<strong>${reached20} months</strong>`;
+                const interestText = reached20 === -1 ? '' : `, earning <strong>${fmt(totalInterest)}</strong> in APY compound interest in the process`;
+                plainTextSummary.innerHTML = `You will reach your <strong>20% down payment</strong> milestone (${fmt(target20)}) in ${monthsText}${interestText}. Your cumulative contributions will total <strong>${fmt(target20 - totalInterest)}</strong>.`;
+            }
+
+            // Line Chart update
+            updateLineChart(chartLabels, chartDataPoints, target3, target5, target10, target20);
+        }
+
+        // Draw Line Chart with target horizontal guides
+        function updateLineChart(labels, dataPoints, t3, t5, t10, t20) {
+            const ctx = document.getElementById('savingsLineChart').getContext('2d');
+
+            // Draw milestone horizontal targets by adding datasets with constant lines!
+            const line3 = Array(labels.length).fill(t3);
+            const line5 = Array(labels.length).fill(t5);
+            const line10 = Array(labels.length).fill(t10);
+            const line20 = Array(labels.length).fill(t20);
+
+            const data = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Projected Savings Balance',
+                        data: dataPoints,
+                        borderColor: '#2563EB',
+                        backgroundColor: '#2563EB',
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        tension: 0.1
+                    },
+                    {
+                        label: '20% Down Limit',
+                        data: line20,
+                        borderColor: '#EF4444',
+                        borderWidth: 1.5,
+                        borderDash: [6, 6],
+                        pointRadius: 0,
+                        fill: false
+                    },
+                    {
+                        label: '10% Down Limit',
+                        data: line10,
+                        borderColor: '#F59E0B',
+                        borderWidth: 1.5,
+                        borderDash: [6, 6],
+                        pointRadius: 0,
+                        fill: false
+                    },
+                    {
+                        label: '5% Down Limit',
+                        data: line5,
+                        borderColor: '#10B981',
+                        borderWidth: 1.5,
+                        borderDash: [6, 6],
+                        pointRadius: 0,
+                        fill: false
+                    }
+                ]
+            };
+
+            if (lineChart) {
+                lineChart.data = data;
+                lineChart.update();
+            } else {
+                lineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + fmt(context.parsed.y);
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    callback: function(value) {
+                                        return fmt(value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Initial Calculations
+        window.addEventListener('load', () => {
+            calculateSavings();
+        });
+    </script>
+</body>
+</html>

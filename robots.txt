@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://housingtoolkit.com/sitemap.xml

@@ -1,3 +1,7 @@
+import { inject } from 'https://esm.sh/@vercel/analytics';
+
+inject();
+
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
     const inputs = [
@@ -237,6 +241,22 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 }
+            }
+        });
+    }
+
+    // Blog Toggle
+    const toggleAllPosts = document.getElementById('toggleAllPosts');
+    const allPostsGrid = document.getElementById('allPostsGrid');
+    if (toggleAllPosts && allPostsGrid) {
+        toggleAllPosts.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (allPostsGrid.style.display === 'none') {
+                allPostsGrid.style.display = 'grid';
+                toggleAllPosts.textContent = 'Show less';
+            } else {
+                allPostsGrid.style.display = 'none';
+                toggleAllPosts.textContent = 'View all articles';
             }
         });
     }

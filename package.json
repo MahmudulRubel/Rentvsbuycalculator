@@ -1,0 +1,15 @@
+{
+  "name": "rent-vs-buy-calculator",
+  "version": "1.0.0",
+  "description": "Premium Rent vs Buy Calculator with SEO optimized blog.",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx -y http-server ./ -p 8080 -o"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
